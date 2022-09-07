@@ -8,14 +8,20 @@ app.use(bodyParser.json());
 
 
 const client = ldap.createClient({
-  url: ["ldap://172.17.0.2:389", "ldap://172.17.0.2:636"],
+  url: ["ldap://10.0.15.211:389"],
 });
+
+client.on('error', (err) => {
+  // handle connection error
+	console.log(err)
+})
 
 app.post("/auth", (req, res) => {
 	console.log(req.body)
   if (req.body.usuario && req.body.contrasenia) {
-	client.bind(`cn=${req.body.usuario},dc=example,dc=org`, req.body.contrasenia, (err) => {
+	client.bind(`cn=${req.body.usuario},ou=usuarios,dc=fi,dc=uncoma,dc=edu,dc=ar`, req.body.contrasenia, (err) => {
 		if(err){
+			console.log(err);
 			res.status(401).send({err: "el usuario y apellido no conciden"});
 		}else{
 			res.status(200).send();
