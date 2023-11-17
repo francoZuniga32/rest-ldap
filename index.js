@@ -1,5 +1,6 @@
 const ldap = require("ldapjs");
 const express = require("express");
+require("dotenv").config();
 
 const app = express();
 const bodyParser = require("body-parser");
@@ -8,7 +9,7 @@ app.use(bodyParser.json());
 
 
 const client = ldap.createClient({
-  url: ["ldap://10.0.15.211:389"],
+  url: [procces.env.IPLDAP],
 });
 
 client.on('error', (err) => {
